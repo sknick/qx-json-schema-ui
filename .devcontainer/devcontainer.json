@@ -1,0 +1,10 @@
+{
+    "name": "qx-json-schema-ui",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "overrideCommand": false,
+    "service": "dev",
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/home/developer/github.com/sknick/qx-json-schema-ui"
+}

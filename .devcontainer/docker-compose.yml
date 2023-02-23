@@ -1,0 +1,25 @@
+version: "2.4"
+
+volumes:
+  vscode-extensions: {}
+
+services:
+  dev:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    container_name: qx-json-schema-ui-dev
+    init: true
+    network_mode: host
+    volumes:
+      # Source code
+      - ../:/home/developer/github.com/sknick/qx-json-schema-ui
+
+      # For GitLab configuration
+      - ${HOME}/.gitconfig:/home/developer/.gitconfig
+
+      # For group setup from host
+      - /etc/group:/etc/hostgroup
+
+      # Persist VS Code extensions between rebuilds
+      - vscode-extensions:/home/developer/.vscode-server/extensions
