@@ -7,13 +7,15 @@ qx.Class.define("jsonui.test.Test", {
             new jsonui.Schema(jsonui.test.Test.__TEST_SCHEMA, generator);
 
             const fields = generator.getFields();
-            this.assertInArray("root.arrayValue", fields);
-            this.assertInArray("root.booleanValue", fields);
-            this.assertInArray("root.integerValue", fields);
-            this.assertInArray("root.numberValue", fields);
-            this.assertInArray("root.objectValue.objectNumberValue", fields);
-            this.assertInArray("root.objectValue.objectStringValue", fields);
-            this.assertInArray("root.stringValue", fields);
+            this.assertInArray("arrayOfStringValue", fields);
+            this.assertInArray("arrayOfObjectValue", fields); // TODO: Object in array
+            this.assertInArray("booleanValue", fields);
+            this.assertInArray("integerValue", fields);
+            this.assertInArray("numberValue", fields);
+            this.assertInArray("objectValue.objectNumberValue", fields);
+            this.assertInArray("objectValue.objectStringValue", fields);
+            this.assertInArray("objectValue.objectObjectValue.objectObjectValueStringValue", fields);
+            this.assertInArray("stringValue", fields);
         }
     },
 
@@ -21,12 +23,25 @@ qx.Class.define("jsonui.test.Test", {
         __TEST_SCHEMA: {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$id": "https://example.com/product.schema.json",
-            "title": "Product",
-            "description": "A product from Acme's catalog",
+            "title": "Test JSON schema",
+            "description": "A test schema",
             "type": "object",
             "properties": {
-                "arrayValue": {
-                    "description": "A description for arrayValue",
+                "arrayOfObjectValue": {
+                    "description": "A description for arrayOfObjectValue",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "arrayOfObjectValueStringValue": {
+                                "description": "A description for arrayOfObjectValueStringValue",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "arrayOfStringValue": {
+                    "description": "A description for arrayOfStringValue",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -55,6 +70,15 @@ qx.Class.define("jsonui.test.Test", {
                     "properties": {
                         "objectNumberValue": {
                             "type": "number"
+                        },
+                        "objectObjectValue": {
+                            "type": "object",
+                            "properties": {
+                                "objectObjectValueStringValue": {
+                                    "description": "A description for objectObjectValueStringValue",
+                                    "type": "string"
+                                }
+                            }
                         },
                         "objectStringValue": {
                             "type": "string"

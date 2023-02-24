@@ -14,6 +14,9 @@ qx.Class.define("jsonui.test.Generator", {
         createArrayField(def, path) {
             console.log(path);
             this.getFields().push(path);
+
+            // TODO
+            // new jsonui.Schema(def.items, this, path);
         },
 
         createBooleanField(def, path) {
