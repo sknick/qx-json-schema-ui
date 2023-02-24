@@ -1,6 +1,6 @@
 qx.Class.define("jsonui.test.Generator", {
     extend: qx.core.Object,
-    implement: [IGenerator],
+    implement: [jsonui.IGenerator],
 
     members: {
         createArrayField(def, path) {
