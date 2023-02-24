@@ -25,7 +25,6 @@ qx.Class.define("jsonui.test.Generator", {
 
         createStringField(def, path) {
             console.log(path);
-
         }
     }
 });
