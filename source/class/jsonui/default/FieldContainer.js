@@ -14,6 +14,8 @@ qx.Class.define("jsonui.default.FieldContainer", {
 
             this.add(new qx.ui.basic.Label(field.getLabel()));
             this.add(field.getWidget());
+
+            // TODO: Description if available
         }
     }
 });
