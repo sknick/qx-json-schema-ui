@@ -11,37 +11,37 @@ qx.Class.define("jsonui.test.Generator", {
     },
 
     members: {
-        createArrayField(def, path) {
-            console.log(path);
-            this.getFields().push(path);
+        createArrayField(schema) {
+            console.log(schema.getPath());
+            this.getFields().push(schema.getPath());
 
             // TODO
-            // new jsonui.Schema(def.items, this, path);
+            // new jsonui.Schema(schema.items, this, path);
         },
 
-        createBooleanField(def, path) {
-            console.log(path);
-            this.getFields().push(path);
+        createBooleanField(schema) {
+            console.log(schema.getPath());
+            this.getFields().push(schema.getPath());
         },
 
-        createEnumField(def, path) {
-            console.log(path);
-            this.getFields().push(path);
+        createEnumField(schema) {
+            console.log(schema.getPath());
+            this.getFields().push(schema.getPath());
         },
 
-        createIntegerField(def, path) {
-            console.log(path);
-            this.getFields().push(path);
+        createIntegerField(schema) {
+            console.log(schema.getPath());
+            this.getFields().push(schema.getPath());
         },
 
-        createNumberField(def, path) {
-            console.log(path);
-            this.getFields().push(path);
+        createNumberField(schema) {
+            console.log(schema.getPath());
+            this.getFields().push(schema.getPath());
         },
 
-        createStringField(def, path) {
-            console.log(path);
-            this.getFields().push(path);
+        createStringField(schema) {
+            console.log(schema.getPath());
+            this.getFields().push(schema.getPath());
         }
     }
 });

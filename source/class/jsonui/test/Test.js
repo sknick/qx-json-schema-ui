@@ -4,7 +4,8 @@ qx.Class.define("jsonui.test.Test", {
     members: {
         testParse() {
             const generator = new jsonui.test.Generator();
-            new jsonui.Schema(jsonui.test.Test.__TEST_SCHEMA, generator);
+            const schema = new jsonui.Schema(jsonui.test.Test.__TEST_SCHEMA, generator);
+            schema.recurse();
 
             const fields = generator.getFields();
             this.assertInArray("arrayOfStringValue", fields);
