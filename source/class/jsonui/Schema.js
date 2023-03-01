@@ -17,6 +17,10 @@ qx.Class.define("jsonui.Schema", {
     },
 
     members: {
+        getName() {
+            return this.__name;
+        },
+
         getParent() {
             return this.__parent;
         },
@@ -29,7 +33,7 @@ qx.Class.define("jsonui.Schema", {
 
             let parent = this.__parent;
             while (parent) {
-                const path = parent.getPath();
+                const path = parent.getName();
                 if (path !== "") {
                     ret.push(path);
                 }
