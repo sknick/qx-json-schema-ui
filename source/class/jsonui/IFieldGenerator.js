@@ -4,11 +4,11 @@
  */
 qx.Interface.define("jsonui.IFieldGenerator", {
     members: {
-        createArrayField(schema) {},
-        createBooleanField(schema) {},
-        createEnumField(schema) {},
-        createIntegerField(schema) {},
-        createNumberField(schema) {},
-        createStringField(schema) {}
+        createArrayField(schemaReader) {},
+        createBooleanField(schemaReader) {},
+        createEnumField(schemaReader) {},
+        createIntegerField(schemaReader) {},
+        createNumberField(schemaReader) {},
+        createStringField(schemaReader) {}
     }
 });

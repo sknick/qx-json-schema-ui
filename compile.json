@@ -31,6 +31,18 @@
                 "jsonui.test.*"
             ],
             "exclude": []
+        },
+        {
+            "class": "jsonui.demo.Application",
+            "name": "jsonui-demo",
+            "theme": "qx.theme.IndigoDark",
+            "title": "qx-json-schema-ui Demo",
+            "bootPath": "source/boot",
+            "environment": {
+                "qx.icontheme": "Tango"
+            },
+            "include": [],
+            "exclude": []
         }
     ]
 }

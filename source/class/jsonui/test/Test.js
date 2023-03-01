@@ -4,7 +4,7 @@ qx.Class.define("jsonui.test.Test", {
     members: {
         testParse() {
             const generator = new jsonui.test.Generator();
-            const reader = new jsonui.SchemaReader(jsonui.test.Test.__TEST_SCHEMA, generator);
+            const reader = new jsonui.SchemaReader(jsonui.test.Test.TEST_SCHEMA, generator);
             reader.read();
 
             const fields = generator.getFields();
@@ -25,7 +25,7 @@ qx.Class.define("jsonui.test.Test", {
     },
 
     statics: {
-        __TEST_SCHEMA: {
+        TEST_SCHEMA: {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$id": "https://example.com/product.schema.json",
             "title": "Test JSON schema",
