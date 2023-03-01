@@ -11,14 +11,28 @@ qx.Class.define("jsonui.default.FieldGenerator", {
     
     members: {
         createArrayField(schemaReader) {
-            // TODO
-
-            const subSchema = new jsonui.SchemaReader(schemaReader.getSchema().items, this, null, schemaReader);
-            subSchema.read();
+            this.__container.addField(
+                new jsonui.default.fields.Array(
+                    schemaReader.getName(),
+                    schemaReader.getSchema().description,
+                    
+                    new jsonui.SchemaReader(
+                        schemaReader.getSchema().items,
+                        this,
+                        null,
+                        schemaReader
+                    )
+                )
+            );
         },
 
         createBooleanField(schemaReader) {
-            this.__container.addField(new jsonui.default.fields.Boolean(schemaReader.getName()));
+            this.__container.addField(
+                new jsonui.default.fields.Boolean(
+                    schemaReader.getName(),
+                    schemaReader.getSchema().description
+                )
+            );
         },
 
         createEnumField(schemaReader) {

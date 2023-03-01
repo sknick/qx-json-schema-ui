@@ -19,12 +19,13 @@ qx.Class.define("jsonui.demo.Application", {
             topContainer.add(this.__schemaField, { edge: "center" });
             topContainer.add(generateButton,     { edge: "south" });
 
-            this.__fieldContainer = new jsonui.default.FieldContainer(10, 10);
+            this.__fieldContainer = new jsonui.default.FieldContainer(10);
             this.__fieldContainer.setPadding(20);
+            this.__fieldContainer.setWidth(600);
 
             const content = new qx.ui.splitpane.Pane("vertical");
             content.add(topContainer, 0);
-            content.add(this.__fieldContainer, 1);
+            content.add(new qx.ui.container.Scroll(this.__fieldContainer, 1));
 
             this.getRoot().add(content, { edge: 0 });
 
