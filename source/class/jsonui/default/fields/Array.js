@@ -12,10 +12,15 @@ qx.Class.define("jsonui.default.fields.Array", {
         this.__itemsField = new qx.ui.form.List();
 
         const addButton = new qx.ui.form.Button("Add");
-        const editButton = new qx.ui.form.Button("Edit");
-        const removeButton = new qx.ui.form.Button("Remove");
+        addButton.setWidth(150);
 
-        const buttonsContainer = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+        const editButton = new qx.ui.form.Button("Edit");
+        editButton.setWidth(150);
+
+        const removeButton = new qx.ui.form.Button("Remove");
+        removeButton.setWidth(150);
+
+        const buttonsContainer = new qx.ui.container.Composite(new qx.ui.layout.VBox(10));
         buttonsContainer.add(addButton);
         buttonsContainer.add(editButton);
         buttonsContainer.add(removeButton);
