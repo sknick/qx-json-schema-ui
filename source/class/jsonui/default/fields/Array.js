@@ -1,9 +1,10 @@
 qx.Class.define("jsonui.default.fields.Array", {
     extend: qx.ui.container.Composite,
 
-    construct(label, description, itemSchemaReader) {
+    construct(path, label, description, itemSchemaReader) {
         this.base(arguments, new qx.ui.layout.Dock(10, 10));
 
+        this.__path = path;
         this.__label = label;
         this.__description = description;
         this.__itemSchemaReader = itemSchemaReader;

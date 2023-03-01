@@ -1,74 +1,72 @@
 qx.Class.define("jsonui.default.FieldGenerator", {
-    extend: qx.core.Object,
-    implement: [jsonui.IFieldGenerator],
+    extend: jsonui.FieldGenerator,
 
-    /**
-     * @param {IFieldContainer} container The container which handles displaying the generated fields.
-     */
     construct(container) {
-        this.__container = container;
+        this.base(arguments, container);
     },
     
     members: {
-        createArrayField(schemaReader) {
-            this.__container.addField(
-                new jsonui.default.fields.Array(
-                    schemaReader.getName(),
-                    schemaReader.getSchema().description,
-                    
-                    new jsonui.SchemaReader(
-                        schemaReader.getSchema().items,
-                        this,
-                        null,
-                        schemaReader
-                    )
+        _createArrayField(schemaReader) {
+            return new jsonui.default.fields.Array(
+                schemaReader.getPath(),
+                schemaReader.getName(),
+                schemaReader.getSchema().description,
+                
+                new jsonui.SchemaReader(
+                    schemaReader.getSchema().items,
+                    this,
+                    null,
+                    schemaReader
                 )
             );
         },
 
-        createBooleanField(schemaReader) {
-            this.__container.addField(
-                new jsonui.default.fields.Boolean(
-                    schemaReader.getName(),
-                    schemaReader.getSchema().description
-                )
+        _createBooleanField(schemaReader) {
+            return new jsonui.default.fields.Boolean(
+                schemaReader.getPath(),
+                schemaReader.getName(),
+                schemaReader.getSchema().description
             );
         },
 
-        createEnumField(schemaReader) {
-            this.__container.addField(
-                new jsonui.default.fields.Enum(
-                    schemaReader.getName(),
-                    schemaReader.getSchema().description,
-                    schemaReader.getSchema().enum
-                )
+        _createEnumField(schemaReader) {
+            return new jsonui.default.fields.Enum(
+                schemaReader.getPath(),
+                schemaReader.getName(),
+                schemaReader.getSchema().description,
+                schemaReader.getSchema().enum
             );
         },
 
-        createIntegerField(schemaReader) {
-            this.__container.addField(
-                new jsonui.default.fields.Integer(
-                    schemaReader.getName(),
-                    schemaReader.getSchema().description
-                )
+        _createIntegerField(schemaReader) {
+            return new jsonui.default.fields.Integer(
+                schemaReader.getPath(),
+                schemaReader.getName(),
+                schemaReader.getSchema().description
             );
         },
 
-        createNumberField(schemaReader) {
-            this.__container.addField(
-                new jsonui.default.fields.Number(
-                    schemaReader.getName(),
-                    schemaReader.getSchema().description
-                )
+        _createNumberField(schemaReader) {
+            return new jsonui.default.fields.Number(
+                schemaReader.getPath(),
+                schemaReader.getName(),
+                schemaReader.getSchema().description
             );
         },
 
-        createStringField(schemaReader) {
-            this.__container.addField(
-                new jsonui.default.fields.String(
-                    schemaReader.getName(),
-                    schemaReader.getSchema().description
-                )
+        _createObjectField(schemaReader) {
+            return new jsonui.default.fields.Object(
+                schemaReader.getPath(),
+                schemaReader.getName(),
+                schemaReader.getSchema().description
+            );
+        },
+
+        _createStringField(schemaReader) {
+            return new jsonui.default.fields.String(
+                schemaReader.getPath(),
+                schemaReader.getName(),
+                schemaReader.getSchema().description
             );
         }
     }

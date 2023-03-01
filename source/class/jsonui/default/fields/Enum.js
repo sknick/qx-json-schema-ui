@@ -2,9 +2,10 @@ qx.Class.define("jsonui.default.fields.Enum", {
     extend: qx.ui.form.SelectBox,
     implement: [jsonui.IField],
 
-    construct(label, description, enumValues) {
+    construct(path, label, description, enumValues) {
         this.base(arguments);
 
+        this.__path = path;
         this.__label = label;
         this.__description = description;
 

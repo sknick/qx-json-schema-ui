@@ -1,9 +1,9 @@
-qx.Class.define("jsonui.default.fields.String", {
-    extend: qx.ui.form.TextField,
+qx.Class.define("jsonui.default.fields.Object", {
+    extend: qx.ui.container.Composite,
     implement: [jsonui.IField],
 
     construct(path, label, description) {
-        this.base(arguments, "");
+        this.base(arguments, new qx.ui.layout.VBox(5));
 
         this.__path = path;
         this.__label = label;

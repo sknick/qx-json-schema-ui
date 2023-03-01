@@ -2,13 +2,13 @@ qx.Class.define("jsonui.SchemaReader", {
     extend: qx.core.Object,
 
     /**
-     * @param {Object}                 schema    The JSON schema definition to be represented by this object. This can
-     *                                           also be a subschema.
-     * @param {jsonui.IFieldGenerator} generator The generator that will create appropriate UI controls for the fields
-     *                                           defined in the schema.
-     * @param {String}                 [name]    The name for the schema this reader is reading if it's not reading the
-     *                                           root schema.
-     * @param {SchemaReader}           [parent]  The reader that parsed the schema that spawned this reader, if any.
+     * @param {Object}                schema    The JSON schema definition to be represented by this object. This can
+     *                                          also be a subschema.
+     * @param {jsonui.FieldGenerator} generator The generator that will handle appropriate UI controls for the fields
+     *                                          defined in the schema.
+     * @param {String}                [name]    The name for the schema this reader is reading if it's not reading the
+     *                                          root schema.
+     * @param {SchemaReader}          [parent]  The reader that parsed the schema that spawned this reader, if any.
      */
     construct(schema, generator, name, parent) {
         this.__schema = schema;
@@ -76,22 +76,27 @@ qx.Class.define("jsonui.SchemaReader", {
             if ("type" in this.__schema) {
                 switch (this.__schema.type) {
                     case "array":
-                        this.__generator.createArrayField(this);
+                        this.__generator.handleArray(this);
                         break;
                     
                     case "boolean":
-                        this.__generator.createBooleanField(this);
+                        this.__generator.handleBoolean(this);
                         break;
                     
                     case "integer":
-                        this.__generator.createIntegerField(this);
+                        this.__generator.handleInteger(this);
                         break;
                     
                     case "number":
-                        this.__generator.createNumberField(this);
+                        this.__generator.handleNumber(this);
                         break;
 
                     case "object":
+                        // We don't want an object field for the root object
+                        if (this.__parent) {
+                            this.__generator.handleObject(this);
+                        }
+
                         for (let propName in this.__schema.properties) {
                             const subSchemaReader = new jsonui.SchemaReader(
                                 this.__schema.properties[propName],
@@ -104,14 +109,14 @@ qx.Class.define("jsonui.SchemaReader", {
                         break;
                     
                     case "string":
-                        this.__generator.createStringField(this);
+                        this.__generator.handleString(this);
                         break;
                     
                     default:
                         throw `Unknown schema type "${this.__schema.type}" for field "${this.getPath()}"`;
                 }
             } else if ("enum" in this.__schema) {
-                this.__generator.createEnumField(this);
+                this.__generator.handleEnum(this);
             } else {
                 throw `Invalid or unhandled definition for field "${this.getPath()}"`;
             }

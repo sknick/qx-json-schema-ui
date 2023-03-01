@@ -21,7 +21,6 @@ qx.Class.define("jsonui.demo.Application", {
 
             this.__fieldContainer = new jsonui.default.FieldContainer(10);
             this.__fieldContainer.setPadding(20);
-            this.__fieldContainer.setWidth(600);
 
             const content = new qx.ui.splitpane.Pane("vertical");
             content.add(topContainer, 0);
@@ -35,7 +34,6 @@ qx.Class.define("jsonui.demo.Application", {
         __onGenerate(e) {
             const schemaText = this.__schemaField.getValue().trim();
             if (schemaText === "") {
-                window.alert("Specify a JSON schema, then hit Generate UI");
                 return;
             }
 

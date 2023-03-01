@@ -2,9 +2,10 @@ qx.Class.define("jsonui.default.fields.Boolean", {
     extend: qx.ui.form.SelectBox,
     implement: [jsonui.IField],
 
-    construct(label, description) {
+    construct(path, label, description) {
         this.base(arguments);
 
+        this.__path = path;
         this.__label = label;
         this.__description = description ? description : "";
 

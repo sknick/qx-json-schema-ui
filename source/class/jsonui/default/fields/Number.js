@@ -2,10 +2,11 @@ qx.Class.define("jsonui.default.fields.Number", {
     extend: qx.ui.form.TextField,
     implement: [jsonui.IField],
 
-    construct(label, description) {
+    construct(path, label, description) {
         this.base(arguments, "");
         this.setFilter(/[0-9.]/);
 
+        this.__path = path;
         this.__label = label;
         this.__description = description;
     },
