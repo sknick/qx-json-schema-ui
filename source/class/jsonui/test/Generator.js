@@ -12,7 +12,6 @@ qx.Class.define("jsonui.test.Generator", {
 
     members: {
         createArrayField(schema) {
-            console.log(schema.getPath());
             this.getFields().push(schema.getPath());
 
             // TODO
@@ -20,27 +19,22 @@ qx.Class.define("jsonui.test.Generator", {
         },
 
         createBooleanField(schema) {
-            console.log(schema.getPath());
             this.getFields().push(schema.getPath());
         },
 
         createEnumField(schema) {
-            console.log(schema.getPath());
             this.getFields().push(schema.getPath());
         },
 
         createIntegerField(schema) {
-            console.log(schema.getPath());
             this.getFields().push(schema.getPath());
         },
 
         createNumberField(schema) {
-            console.log(schema.getPath());
             this.getFields().push(schema.getPath());
         },
 
         createStringField(schema) {
-            console.log(schema.getPath());
             this.getFields().push(schema.getPath());
         }
     }
