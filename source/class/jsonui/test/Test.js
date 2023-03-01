@@ -4,19 +4,23 @@ qx.Class.define("jsonui.test.Test", {
     members: {
         testParse() {
             const generator = new jsonui.test.Generator();
-            const schema = new jsonui.Schema(jsonui.test.Test.__TEST_SCHEMA, generator);
-            schema.recurse();
+            const reader = new jsonui.SchemaReader(jsonui.test.Test.__TEST_SCHEMA, generator);
+            reader.read();
 
             const fields = generator.getFields();
-            this.assertInArray("arrayOfStringValue", fields);
-            this.assertInArray("arrayOfObjectValue", fields); // TODO: Object in array
-            this.assertInArray("booleanValue", fields);
-            this.assertInArray("integerValue", fields);
-            this.assertInArray("numberValue", fields);
-            this.assertInArray("objectValue.objectNumberValue", fields);
-            this.assertInArray("objectValue.objectStringValue", fields);
-            this.assertInArray("objectValue.objectObjectValue.objectObjectValueStringValue", fields);
-            this.assertInArray("stringValue", fields);
+            this.assertInArray("array_of_object_value", fields);
+            this.assertInArray("array_of_object_value.array_of_object_value|string_value", fields);
+            this.assertInArray("array_of_string_value", fields);
+            this.assertInArray("boolean_value", fields);
+            this.assertInArray("enum_value", fields);
+            this.assertInArray("integer_value", fields);
+            this.assertInArray("number_value", fields);
+            this.assertInArray("object_value.object_value|number_value", fields);
+            this.assertInArray("object_value.object_value|array_of_object_value", fields);
+            this.assertInArray("object_value.object_value|array_of_object_value.object_value|array_of_object_value|boolean_value", fields);
+            this.assertInArray("object_value.object_value|object_value.object_value|object_value|string_value", fields);
+            this.assertInArray("object_value.object_value|string_value", fields);
+            this.assertInArray("string_value", fields);
         }
     },
 
@@ -28,66 +32,78 @@ qx.Class.define("jsonui.test.Test", {
             "description": "A test schema",
             "type": "object",
             "properties": {
-                "arrayOfObjectValue": {
-                    "description": "A description for arrayOfObjectValue",
+                "array_of_object_value": {
+                    "description": "A description for array_of_object_value",
                     "type": "array",
                     "items": {
                         "type": "object",
                         "properties": {
-                            "arrayOfObjectValueStringValue": {
-                                "description": "A description for arrayOfObjectValueStringValue",
+                            "array_of_object_value|string_value": {
+                                "description": "A description for array_of_object_value|string_value",
                                 "type": "string"
                             }
                         }
                     }
                 },
-                "arrayOfStringValue": {
-                    "description": "A description for arrayOfStringValue",
+                "array_of_string_value": {
+                    "description": "A description for array_of_string_value",
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
                 },
-                "booleanValue": {
-                    "description": "A description for booleanValue",
+                "boolean_value": {
+                    "description": "A description for boolean_value",
                     "type": "boolean"
                 },
-                "enumValue": {
-                    "description": "A description for enumValue",
+                "enum_value": {
+                    "description": "A description for enum_value",
                     "enum": [
-                        "enum_value"
+                        "enum_value_1",
+                        "enum_value_2"
                     ]
                 },
-                "integerValue": {
-                    "description": "A description for integerValue",
+                "integer_value": {
+                    "description": "A description for integer_value",
                     "type": "integer"
                 },
-                "numberValue": {
-                    "description": "A description for numberValue",
+                "number_value": {
+                    "description": "A description for number_value",
                     "type": "number"
                 },
-                "objectValue": {
+                "object_value": {
                     "type": "object",
                     "properties": {
-                        "objectNumberValue": {
+                        "object_value|array_of_object_value": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "object_value|array_of_object_value|boolean_value": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        },
+                        "object_value|number_value": {
                             "type": "number"
                         },
-                        "objectObjectValue": {
+                        "object_value|object_value": {
                             "type": "object",
                             "properties": {
-                                "objectObjectValueStringValue": {
-                                    "description": "A description for objectObjectValueStringValue",
+                                "object_value|object_value|string_value": {
+                                    "description": "A description for object_value|object_value|string_value",
                                     "type": "string"
                                 }
                             }
                         },
-                        "objectStringValue": {
+                        "object_value|string_value": {
                             "type": "string"
                         }
                     }
                 },
-                "stringValue": {
-                    "description": "A description for stringValue",
+                "string_value": {
+                    "description": "A description for string_value",
                     "type": "string"
                 }
             }

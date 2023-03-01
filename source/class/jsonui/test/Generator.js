@@ -1,6 +1,6 @@
 qx.Class.define("jsonui.test.Generator", {
     extend: qx.core.Object,
-    implement: [jsonui.IGenerator],
+    implement: [jsonui.IFieldGenerator],
 
     properties: {
         fields: {
@@ -11,31 +11,37 @@ qx.Class.define("jsonui.test.Generator", {
     },
 
     members: {
-        createArrayField(schema) {
-            this.getFields().push(schema.getPath());
+        createArrayField(schemaReader) {
+            console.log(schemaReader.getPath());
+            this.getFields().push(schemaReader.getPath());
 
-            // TODO
-            // new jsonui.Schema(schema.items, this, path);
+            const subSchema = new jsonui.SchemaReader(schemaReader.getSchema().items, this, null, schemaReader);
+            subSchema.read();
         },
 
-        createBooleanField(schema) {
-            this.getFields().push(schema.getPath());
+        createBooleanField(schemaReader) {
+            console.log(schemaReader.getPath());
+            this.getFields().push(schemaReader.getPath());
         },
 
-        createEnumField(schema) {
-            this.getFields().push(schema.getPath());
+        createEnumField(schemaReader) {
+            console.log(schemaReader.getPath());
+            this.getFields().push(schemaReader.getPath());
         },
 
-        createIntegerField(schema) {
-            this.getFields().push(schema.getPath());
+        createIntegerField(schemaReader) {
+            console.log(schemaReader.getPath());
+            this.getFields().push(schemaReader.getPath());
         },
 
-        createNumberField(schema) {
-            this.getFields().push(schema.getPath());
+        createNumberField(schemaReader) {
+            console.log(schemaReader.getPath());
+            this.getFields().push(schemaReader.getPath());
         },
 
-        createStringField(schema) {
-            this.getFields().push(schema.getPath());
+        createStringField(schemaReader) {
+            console.log(schemaReader.getPath());
+            this.getFields().push(schemaReader.getPath());
         }
     }
 });

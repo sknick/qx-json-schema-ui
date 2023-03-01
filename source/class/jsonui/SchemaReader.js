@@ -1,13 +1,14 @@
-qx.Class.define("jsonui.Schema", {
+qx.Class.define("jsonui.SchemaReader", {
     extend: qx.core.Object,
 
     /**
-     * @param {String}            schema    The JSON schema definition to be represented by this object. This can also
-     *                                      be a subschema.
-     * @param {jsonui.IGenerator} generator The generator that will create appropriate UI controls for the definitions
-     *                                      in the schema.
-     * @param {String}            [name]    The name for this schema if it's not the root schema.
-     * @param {Schema}            [parent]  The parent schema of this one, if any.
+     * @param {Object}                 schema    The JSON schema definition to be represented by this object. This can
+     *                                           also be a subschema.
+     * @param {jsonui.IFieldGenerator} generator The generator that will create appropriate UI controls for the fields
+     *                                           defined in the schema.
+     * @param {String}                 [name]    The name for the schema this reader is reading if it's not reading the
+     *                                           root schema.
+     * @param {SchemaReader}           [parent]  The reader that parsed the schema that spawned this reader, if any.
      */
     construct(schema, generator, name, parent) {
         this.__schema = schema;
@@ -18,23 +19,24 @@ qx.Class.define("jsonui.Schema", {
 
     members: {
         /**
-         * @returns {String?} The name for this schema or null if it's the root schema.
+         * @returns {String?} The name for the schema that this reader is reading or null if it's reading the root
+         *                    schema.
          */
         getName() {
             return this.__name;
         },
 
         /**
-         * @returns {jsonui.Schema?} The parent schema of this one or null if it doesn't have a parent.
+         * @returns {jsonui.SchemaReader?} The parent reader of this one or null if it doesn't have a parent.
          */
         getParent() {
             return this.__parent;
         },
 
         /**
-         * @returns {String} The ancestry chain of this schema, where each ancestor is separated by a ".", with the most
-         *                   senior ancestor being the first. If this schema has no ancestors, an empty string will be
-         *                   returned.
+         * @returns {String} The ancestry chain of this reader, where each ancestor's name is separated by a ".", with
+         *                   the most senior ancestor being the first. If this reader has no ancestors, an empty string
+         *                   will be returned.
          */
         getPath() {
             const ret = [];
@@ -58,10 +60,19 @@ qx.Class.define("jsonui.Schema", {
         },
 
         /**
-         * Begins walking the schema, calling the various methods of the schema's IGenerator instance to have it create
-         * UI fields for viewing and editing the fields.
+         * @returns {Object} The JSON schema or subschema that this reader reads.
          */
-        recurse() {
+        getSchema() {
+            return this.__schema;
+        },
+
+        /**
+         * Begins reading the schema, calling the various methods of the reader's IGenerator instance to have it create
+         * UI fields for viewing and editing the fields of the schema.
+         * 
+         * @throws {String} if an error occurs while reading.
+         */
+        read() {
             if ("type" in this.__schema) {
                 switch (this.__schema.type) {
                     case "array":
@@ -82,9 +93,13 @@ qx.Class.define("jsonui.Schema", {
 
                     case "object":
                         for (let propName in this.__schema.properties) {
-                            const subSchema = new jsonui.Schema(this.__schema.properties[propName], this.__generator,
-                                propName, this);
-                            subSchema.recurse();
+                            const subSchemaReader = new jsonui.SchemaReader(
+                                this.__schema.properties[propName],
+                                this.__generator,
+                                propName,
+                                this
+                            );
+                            subSchemaReader.read();
                         }
                         break;
                     
