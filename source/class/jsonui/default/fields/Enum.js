@@ -1,3 +1,6 @@
+/**
+ * An IField suitable for displaying an enum.
+ */
 qx.Class.define("jsonui.default.fields.Enum", {
     extend: qx.ui.form.SelectBox,
     implement: [jsonui.IField],

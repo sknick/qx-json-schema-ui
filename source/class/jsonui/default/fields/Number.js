@@ -1,3 +1,6 @@
+/**
+ * An IField suitable for displaying a number.
+ */
 qx.Class.define("jsonui.default.fields.Number", {
     extend: qx.ui.form.TextField,
     implement: [jsonui.IField],

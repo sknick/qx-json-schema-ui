@@ -1,3 +1,6 @@
+/**
+ * An IField suitable for displaying an integer.
+ */
 qx.Class.define("jsonui.default.fields.Integer", {
     extend: qx.ui.form.TextField,
     implement: [jsonui.IField],

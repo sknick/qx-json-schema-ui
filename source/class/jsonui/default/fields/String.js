@@ -1,3 +1,6 @@
+/**
+ * An IField suitable for displaying a string.
+ */
 qx.Class.define("jsonui.default.fields.String", {
     extend: qx.ui.form.TextField,
     implement: [jsonui.IField],

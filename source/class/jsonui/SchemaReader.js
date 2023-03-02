@@ -1,10 +1,16 @@
+/**
+ * An object which can read a JSON schema (or subschema) and call to the specified generator to create appropriate UI
+ * fields while reading.
+ */
 qx.Class.define("jsonui.SchemaReader", {
     extend: qx.core.Object,
 
     /**
+     * Constructor.
+     * 
      * @param {Object}                schema    The JSON schema definition to be represented by this object. This can
      *                                          also be a subschema.
-     * @param {jsonui.FieldGenerator} generator The generator that will handle appropriate UI controls for the fields
+     * @param {jsonui.FieldGenerator} generator The generator that will create appropriate UI controls for the fields
      *                                          defined in the schema.
      * @param {String}                [name]    The name for the schema this reader is reading if it's not reading the
      *                                          root schema.
@@ -67,8 +73,15 @@ qx.Class.define("jsonui.SchemaReader", {
         },
 
         /**
-         * Begins reading the schema, calling the various methods of the reader's IGenerator instance to have it create
-         * UI fields for viewing and editing the fields of the schema.
+         * @returns {Boolean} True if this reader is reading the root schema.
+         */
+        isRoot() {
+            return !this.__parent;
+        },
+
+        /**
+         * Begins reading the schema, calling the various methods of the reader's FieldGenerator instance to have it
+         * create UI fields for viewing and editing the fields of the schema.
          * 
          * @throws {String} if an error occurs while reading.
          */

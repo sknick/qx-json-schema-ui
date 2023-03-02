@@ -1,5 +1,9 @@
+/**
+ * An IField suitable for displaying an array.
+ */
 qx.Class.define("jsonui.default.fields.Array", {
     extend: qx.ui.container.Composite,
+    implement: [jsonui.IField],
 
     construct(path, label, description, itemSchemaReader) {
         this.base(arguments, new qx.ui.layout.Dock(10, 10));
@@ -27,6 +31,10 @@ qx.Class.define("jsonui.default.fields.Array", {
 
         this.add(this.__itemsField, { edge: "center" });
         this.add(buttonsContainer,  { edge: "east" });
+
+        addButton.addListener("execute", this.__onAdd, this);
+        editButton.addListener("execute", this.__onEdit, this);
+        removeButton.addListener("execute", this.__onRemove, this);
     },
 
     members: {
@@ -40,6 +48,18 @@ qx.Class.define("jsonui.default.fields.Array", {
 
         getWidget() {
             return this;
+        },
+
+        __onAdd(e) {
+            // TODO
+        },
+
+        __onEdit(e) {
+            // TODO
+        },
+
+        __onRemove(e) {
+            // TODO
         }
     }
 });

@@ -1,6 +1,9 @@
+/**
+ * An IField suitable for displaying an object.
+ */
 qx.Class.define("jsonui.default.fields.Object", {
     extend: qx.ui.container.Composite,
-    implement: [jsonui.IField],
+    implement: [jsonui.ICompositeField],
 
     construct(path, label, description) {
         this.base(arguments, new qx.ui.layout.VBox(5));
@@ -11,6 +14,11 @@ qx.Class.define("jsonui.default.fields.Object", {
     },
 
     members: {
+        addField(field) {
+            // TODO
+            this.add(new qx.ui.basic.Label(`TODO: [${field.getLabel()}]`));
+        },
+
         getDescription() {
             return this.__description;
         },

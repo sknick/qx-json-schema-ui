@@ -1,3 +1,6 @@
+/**
+ * An IField suitable for displaying a boolean.
+ */
 qx.Class.define("jsonui.default.fields.Boolean", {
     extend: qx.ui.form.SelectBox,
     implement: [jsonui.IField],

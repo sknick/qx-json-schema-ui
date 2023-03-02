@@ -1,6 +1,14 @@
+/**
+ * A default IField generator.
+ */
 qx.Class.define("jsonui.default.FieldGenerator", {
     extend: jsonui.FieldGenerator,
 
+    /**
+     * Constructor.
+     * 
+     * @param {jsonui.IFieldContainer} container The container which handles displaying the generated fields.
+     */
     construct(container) {
         this.base(arguments, container);
     },
