@@ -20,7 +20,6 @@ qx.Class.define("jsonui.demo.Application", {
             topContainer.add(generateButton,     { edge: "south" });
 
             this.__fieldContainer = new jsonui.default.FieldContainer(10);
-            this.__fieldContainer.setPadding(20);
             this.__fieldContainer.setMaxWidth(800);
 
             const content = new qx.ui.splitpane.Pane("vertical");

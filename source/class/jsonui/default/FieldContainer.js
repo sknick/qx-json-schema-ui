@@ -12,6 +12,7 @@ qx.Class.define("jsonui.default.FieldContainer", {
      */
     construct(spacing) {
         this.base(arguments, new qx.ui.layout.VBox(spacing));
+        this.setAppearance("jsonui-field-container");
     },
 
     members: {

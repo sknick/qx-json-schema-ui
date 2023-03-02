@@ -35,7 +35,7 @@
         {
             "class": "jsonui.demo.Application",
             "name": "jsonui-demo",
-            "theme": "qx.theme.IndigoDark",
+            "theme": "jsonui.theme.Theme",
             "title": "qx-json-schema-ui Demo",
             "bootPath": "source/boot",
             "environment": {
