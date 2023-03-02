@@ -5,6 +5,14 @@
 qx.Class.define("jsonui.SchemaReader", {
     extend: qx.core.Object,
 
+    properties: {
+        trace: {
+            check: "Boolean",
+            init: false,
+            nullable: false
+        }
+    },
+
     /**
      * Constructor.
      * 
@@ -40,14 +48,18 @@ qx.Class.define("jsonui.SchemaReader", {
         },
 
         /**
+         * @param {Boolean} [includeRootIndicator] Pass true to have the path started with an indicator for the root
+         *                                         ("[root]").
          * @returns {String} The ancestry chain of this reader, where each ancestor's name is separated by a ".", with
          *                   the most senior ancestor being the first. If this reader has no ancestors, an empty string
          *                   will be returned.
          */
-        getPath() {
+        getPath(includeRootIndicator) {
             const ret = [];
             if (this.__name) {
                 ret.push(this.__name);
+            } else if (this.isRoot() && includeRootIndicator) {
+                ret.push("[root]");
             }
 
             let parent = this.__parent;
@@ -55,6 +67,8 @@ qx.Class.define("jsonui.SchemaReader", {
                 const parentName = parent.getName();
                 if (parentName) {
                     ret.push(parentName);
+                } else if (parent.isRoot() && includeRootIndicator) {
+                    ret.push("[root]");
                 }
 
                 parent = parent.getParent();
@@ -89,22 +103,28 @@ qx.Class.define("jsonui.SchemaReader", {
             if ("type" in this.__schema) {
                 switch (this.__schema.type) {
                     case "array":
+                        this.__log();
                         this.__generator.handleArray(this);
                         break;
                     
                     case "boolean":
+                        this.__log();
                         this.__generator.handleBoolean(this);
                         break;
                     
                     case "integer":
+                        this.__log();
                         this.__generator.handleInteger(this);
                         break;
                     
                     case "number":
+                        this.__log();
                         this.__generator.handleNumber(this);
                         break;
 
                     case "object":
+                        this.__log();
+
                         // We don't want an object field for the root object
                         if (this.__parent) {
                             this.__generator.handleObject(this);
@@ -117,11 +137,13 @@ qx.Class.define("jsonui.SchemaReader", {
                                 propName,
                                 this
                             );
+                            subSchemaReader.setTrace(this.getTrace());
                             subSchemaReader.read();
                         }
                         break;
                     
                     case "string":
+                        this.__log();
                         this.__generator.handleString(this);
                         break;
                     
@@ -129,9 +151,16 @@ qx.Class.define("jsonui.SchemaReader", {
                         throw `Unknown schema type "${this.__schema.type}" for field "${this.getPath()}"`;
                 }
             } else if ("enum" in this.__schema) {
+                this.__log();
                 this.__generator.handleEnum(this);
             } else {
                 throw `Invalid or unhandled definition for field "${this.getPath()}"`;
+            }
+        },
+
+        __log() {
+            if (this.getTrace()) {
+                console.warn(`SchemaReader: ${this.getPath(true)}`);
             }
         }
     }
