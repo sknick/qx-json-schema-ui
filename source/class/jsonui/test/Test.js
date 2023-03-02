@@ -6,8 +6,6 @@ qx.Class.define("jsonui.test.Test", {
             const generator = new jsonui.test.Generator(new jsonui.test.DummyFieldContainer());
 
             const reader = new jsonui.SchemaReader(jsonui.test.Test.TEST_SCHEMA, generator);
-            reader.setTrace(true);
-
             reader.read();
 
             const fields = generator.getFields();
@@ -17,7 +15,10 @@ qx.Class.define("jsonui.test.Test", {
             this.assertInArray("enum_value", fields);
             this.assertInArray("integer_value", fields);
             this.assertInArray("number_value", fields);
-            // this.assertInArray("object_value.object_value", fields);
+            this.assertInArray("object_value.object_value|array_of_object_value", fields);
+            this.assertInArray("object_value.object_value|number_value", fields);
+            this.assertInArray("object_value.object_value|object_value.object_value|object_value|string_value", fields);
+            this.assertInArray("object_value.object_value|string_value", fields);
             this.assertInArray("string_value", fields);
         }
     },
@@ -69,37 +70,37 @@ qx.Class.define("jsonui.test.Test", {
                     "description": "A description for number_value",
                     "type": "number"
                 },
-                // "object_value": {
-                //     "type": "object",
-                //     "properties": {
-                //         "object_value|array_of_object_value": {
-                //             "type": "array",
-                //             "items": {
-                //                 "type": "object",
-                //                 "properties": {
-                //                     "object_value|array_of_object_value|boolean_value": {
-                //                         "type": "boolean"
-                //                     }
-                //                 }
-                //             }
-                //         },
-                //         "object_value|number_value": {
-                //             "type": "number"
-                //         },
-                //         "object_value|object_value": {
-                //             "type": "object",
-                //             "properties": {
-                //                 "object_value|object_value|string_value": {
-                //                     "description": "A description for object_value|object_value|string_value",
-                //                     "type": "string"
-                //                 }
-                //             }
-                //         },
-                //         "object_value|string_value": {
-                //             "type": "string"
-                //         }
-                //     }
-                // },
+                "object_value": {
+                    "type": "object",
+                    "properties": {
+                        "object_value|array_of_object_value": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "object_value|array_of_object_value|boolean_value": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        },
+                        "object_value|number_value": {
+                            "type": "number"
+                        },
+                        "object_value|object_value": {
+                            "type": "object",
+                            "properties": {
+                                "object_value|object_value|string_value": {
+                                    "description": "A description for object_value|object_value|string_value",
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "object_value|string_value": {
+                            "type": "string"
+                        }
+                    }
+                },
                 "string_value": {
                     "description": "A description for string_value",
                     "type": "string"

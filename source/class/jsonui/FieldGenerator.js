@@ -117,8 +117,8 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method must be implemented by subclasses to create an IField of the appropriate type and return it.
          * @param {jsonui.SchemaReader} schemaReader The reader responsible for wanting the field.
-         * @returns {jsonui.IField} The IField instance which can be used for viewing and editing the item indicated by
-         *                          the reader.
+         * @returns {jsonui.ICompositeField} The ICompositeField instance which can be used for viewing and editing the
+         *                                   item indicated by the reader.
          */
         _createObjectField(schemaReader) {},
 
