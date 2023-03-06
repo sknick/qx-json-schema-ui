@@ -41,8 +41,11 @@ qx.Class.define("jsonui.demo.Application", {
                 this.__fieldContainer.removeAll();
 
                 const schema = JSON.parse(schemaText);
+                
+                const generator = new jsonui.default.FieldGenerator(this.__fieldContainer);
+                generator.getArrayItemEditConfig().setModal(true);
 
-                const reader = new jsonui.SchemaReader(schema, new jsonui.default.FieldGenerator(this.__fieldContainer));
+                const reader = new jsonui.SchemaReader(schema, generator);
                 reader.read();
             } catch (ex) {
                 window.alert(ex);

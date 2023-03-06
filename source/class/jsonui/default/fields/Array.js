@@ -5,6 +5,27 @@ qx.Class.define("jsonui.default.fields.Array", {
     extend: qx.ui.container.Composite,
     implement: [jsonui.IField],
 
+    properties: {
+        /**
+         * The configuration to apply to any editing dialogs shown by this field.
+         */
+        editConfig: {
+            init: new jsonui.default.EditArrayItemConfig(),
+            check: "jsonui.default.EditArrayItemConfig",
+            nullable: false
+        }
+    },
+
+    /**
+     * Constructor.
+     * 
+     * @param {String} path                          The ancestry chain of this field, with each ancestor indicated,
+     *                                               separated by a ".", from oldest to youngest. The name associated
+     *                                               with this field is the last item in the path.
+     * @param {String} label                         The label to show for this field.
+     * @param {String} [description]                 An optional description to show for this field.
+     * @param {jsonui.SchemaReader} itemSchemaReader The reader which can be used to read the items in this array field.
+     */
     construct(path, label, description, itemSchemaReader) {
         this.base(arguments, new qx.ui.layout.Dock(10, 10));
 
@@ -51,7 +72,8 @@ qx.Class.define("jsonui.default.fields.Array", {
         },
 
         __onAdd(e) {
-            // TODO
+            const dlg = new jsonui.default.EditArrayItemDialog(this.getEditConfig(), this.__itemSchemaReader);
+            dlg.show();
         },
 
         __onEdit(e) {

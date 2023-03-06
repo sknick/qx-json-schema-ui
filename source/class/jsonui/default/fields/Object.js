@@ -5,6 +5,15 @@ qx.Class.define("jsonui.default.fields.Object", {
     extend: jsonui.default.FieldContainer,
     implement: [jsonui.ICompositeField],
 
+    /**
+     * Constructor.
+     * 
+     * @param {String} path          The ancestry chain of this field, with each ancestor indicated, separated by a ".",
+     *                               from oldest to youngest. The name associated with this field is the last item in
+     *                               the path.
+     * @param {String} label         The label to show for this field.
+     * @param {String} [description] An optional description to show for this field.
+     */
     construct(path, label, description) {
         this.base(arguments, 5);
         this.setAppearance("jsonui-object-field");

@@ -4,6 +4,17 @@
 qx.Class.define("jsonui.default.FieldGenerator", {
     extend: jsonui.FieldGenerator,
 
+    properties: {
+        /**
+         * The configuration to be applied to new dialogs for editing items in array fields.
+         */
+        arrayItemEditConfig: {
+            init: new jsonui.default.EditArrayItemConfig(),
+            check: "jsonui.default.EditArrayItemConfig",
+            nullable: false
+        }
+    },
+
     /**
      * Constructor.
      * 
@@ -15,18 +26,15 @@ qx.Class.define("jsonui.default.FieldGenerator", {
     
     members: {
         _createArrayField(schemaReader) {
-            return new jsonui.default.fields.Array(
+            const ret = new jsonui.default.fields.Array(
                 schemaReader.getPath(),
                 schemaReader.getName(),
                 schemaReader.getSchema().description,
                 
-                new jsonui.SchemaReader(
-                    schemaReader.getSchema().items,
-                    this,
-                    null,
-                    schemaReader
-                )
+                new jsonui.SchemaReader(schemaReader.getSchema().items, this)
             );
+            ret.setEditConfig(this.getArrayItemEditConfig());
+            return ret;
         },
 
         _createBooleanField(schemaReader) {
