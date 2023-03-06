@@ -132,8 +132,10 @@ qx.Class.define("jsonui.FieldGenerator", {
 
         __addField(schemaReader, field) {
             let container = this.__container;
-            if (!schemaReader.getParent().isRoot()) {
-                const parentPath = schemaReader.getParent().getPath();
+
+            const parent = schemaReader.getParent();
+            if (parent && !parent.isRoot()) {
+                const parentPath = parent.getPath();
                 if (!(parentPath in this.__pathsToFields)) {
                     throw `Unable to find field for parent path "${parentPath}"`;
                 }

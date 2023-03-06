@@ -31,7 +31,7 @@ qx.Class.define("jsonui.default.FieldGenerator", {
                 schemaReader.getName(),
                 schemaReader.getSchema().description,
                 
-                new jsonui.SchemaReader(schemaReader.getSchema().items, this)
+                new jsonui.SchemaReader(schemaReader.getSchema().items, this, schemaReader.getName())
             );
             ret.setEditConfig(this.getArrayItemEditConfig());
             return ret;
