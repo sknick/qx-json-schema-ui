@@ -123,6 +123,8 @@ qx.Class.define("jsonui.SchemaReader", {
         read(generator) {
             let genToUse = generator ? generator : this.__generator;
 
+            // If this schema is a reference to something, then replace this schema with the definition from that
+            // reference
             if ("$ref" in this.__schema) {
                 this.__schema = this.__resolveRef(this.__schema.$ref);
             }
