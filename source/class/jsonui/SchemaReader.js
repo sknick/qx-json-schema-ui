@@ -133,7 +133,11 @@ qx.Class.define("jsonui.SchemaReader", {
                 switch (this.__schema.type) {
                     case "array":
                         this.__log();
-                        genToUse.handleArray(this);
+
+                        const subSchemaReader = new jsonui.SchemaReader(this.__schema.items, genToUse, this.__name);
+                        subSchemaReader.setTrace(this.getTrace());
+
+                        genToUse.handleArray(subSchemaReader);
                         break;
                     
                     case "boolean":
@@ -178,7 +182,10 @@ qx.Class.define("jsonui.SchemaReader", {
                                 this
                             );
                             subSchemaReader.setTrace(this.getTrace());
-                            subSchemaReader.read();
+                            
+                            // Since patternProperties can result in multiple properties to describe the same kind of
+                            // thing, treat them as an array of items
+                            genToUse.handleArray(subSchemaReader);
                         }
                         break;
                     
