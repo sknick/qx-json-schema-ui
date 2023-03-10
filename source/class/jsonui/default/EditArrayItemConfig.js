@@ -18,6 +18,12 @@ qx.Class.define("jsonui.default.EditArrayItemConfig", {
             nullable: false
         },
 
+        height: {
+            init: 300,
+            check: "Integer",
+            nullable: false
+        },
+
         modal: {
             init: false,
             check: "Boolean",

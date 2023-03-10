@@ -63,7 +63,12 @@ qx.Class.define("jsonui.demo.Application", {
                 const schema = JSON.parse(schemaText);
                 
                 const generator = new jsonui.default.FieldGenerator(this.__fieldContainer);
+                generator.getArrayItemEditConfig().setAllowMaximize(true);
+                generator.getArrayItemEditConfig().setHeight(450);
                 generator.getArrayItemEditConfig().setModal(true);
+                generator.getArrayItemEditConfig().setResizable(true);
+                generator.getArrayItemEditConfig().setShowMaximize(true);
+                generator.getArrayItemEditConfig().setWidth(600);
 
                 const reader = new jsonui.SchemaReader(schema, generator);
                 reader.setTrace(this.__traceCheckBox.getValue());

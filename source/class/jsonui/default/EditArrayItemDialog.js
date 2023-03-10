@@ -13,18 +13,45 @@ qx.Class.define("jsonui.default.EditArrayItemDialog", {
      */
     construct(dialogConfig, itemSchemaReader) {
         this.base(arguments, "Add Item");
+        this.setLayout(new qx.ui.layout.Dock(10, 10));
+
+        this.setAllowMaximize(dialogConfig.getAllowMaximize());
+        this.setAllowMinimize(dialogConfig.getAllowMinimize());
+        this.setHeight(dialogConfig.getHeight());
         this.setModal(dialogConfig.getModal());
         this.setResizable(dialogConfig.getResizable());
-        this.setAllowMaximize(dialogConfig.getAllowMaximize());
         this.setShowMaximize(dialogConfig.getShowMaximize());
-        this.setAllowMinimize(dialogConfig.getAllowMinimize());
         this.setShowMinimize(dialogConfig.getAllowMinimize());
         this.setWidth(dialogConfig.getWidth());
-        this.setLayout(new qx.ui.layout.VBox(dialogConfig.getVerticalSpacing()));
+
+        const okButton = new qx.ui.form.Button("OK");
+        okButton.setWidth(100);
+
+        const cancelButton = new qx.ui.form.Button("Cancel");
+
+        const buttonContainer = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
+        buttonContainer.add(okButton);
+        buttonContainer.add(cancelButton);
+
+        const container = new qx.ui.container.Composite(new qx.ui.layout.Dock());
+        container.add(buttonContainer, { edge: "east" });
+
+        this.__fieldContainer = new qx.ui.container.Composite(new qx.ui.layout.VBox(dialogConfig.getVerticalSpacing()));
+        this.__fieldContainer.setPadding(10);
+
+        const scroll = new qx.ui.container.Scroll();
+        scroll.add(this.__fieldContainer);
+
+        this.add(scroll,    { edge: "center" });
+        this.add(container, { edge: "south" });
 
         itemSchemaReader.read(new jsonui.default.FieldGenerator(this));
 
         this.center();
+
+        this.addListener("keypress", this.__onKeyPressed, this, true);
+        okButton.addListener("execute", this.__onOK, this);
+        cancelButton.addListener("execute", this.__onCancel, this);
     },
 
     members: {
@@ -32,7 +59,25 @@ qx.Class.define("jsonui.default.EditArrayItemDialog", {
          * @param {jsonui.IField} field The field to be added to this container.
          */
         addField(field) {
-            jsonui.default.FieldContainer.addFieldToContainer(this, field);
+            jsonui.default.FieldContainer.addFieldToContainer(this.__fieldContainer, field);
+        },
+
+        __onCancel(e) {
+            this.hide();
+        },
+
+        __onOK(e) {
+            this.fireDataEvent("confirmed", null); // TODO
+        },
+        
+        __onKeyPressed(e) {
+            if (e.getKeyIdentifier() === "Escape") {
+                this.close();
+            }
         }
+    },
+
+    events: {
+        "confirmed": "qx.event.type.Data"
     }
 });
