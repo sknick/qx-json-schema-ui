@@ -8,6 +8,8 @@ qx.Class.define("jsonui.demo.Application", {
             if (qx.core.Environment.get("qx.debug")) {
                 qx.log.appender.Native;
             }
+                
+            this.__fieldGenerator = null;
 
             const schema = qx.bom.storage.Web.getLocal().getItem("jsonui-schema");
 
@@ -23,14 +25,21 @@ qx.Class.define("jsonui.demo.Application", {
 
             const generateButton = new qx.ui.form.Button("Generate UI");
 
+            this.__applyJsonDocButton = new qx.ui.form.Button("Apply JSON Document");
+            this.__applyJsonDocButton.setEnabled(false);
+
             const trace = qx.bom.storage.Web.getLocal().getItem("jsonui-trace");
 
             this.__traceCheckBox = new qx.ui.form.CheckBox("Trace (debug console)");
             this.__traceCheckBox.setValue(trace ? true : false);
 
+            const rightControlsContainer = new qx.ui.container.Composite(new qx.ui.layout.HBox(10));
+            rightControlsContainer.add(this.__applyJsonDocButton);
+            rightControlsContainer.add(this.__traceCheckBox);
+
             const controlsContainer = new qx.ui.container.Composite(new qx.ui.layout.Dock(10));
-            controlsContainer.add(generateButton,       { edge: "center" });
-            controlsContainer.add(this.__traceCheckBox, { edge: "east" });
+            controlsContainer.add(generateButton,         { edge: "center" });
+            controlsContainer.add(rightControlsContainer, { edge: "east" });
 
             const topContainer = new qx.ui.container.Composite(new qx.ui.layout.Dock(5));
             topContainer.add(this.__schemaField, { edge: "center" });
@@ -46,6 +55,11 @@ qx.Class.define("jsonui.demo.Application", {
             this.getRoot().add(content, { edge: 0 });
 
             generateButton.addListener("execute", this.__onGenerate, this);
+            this.__applyJsonDocButton.addListener("execute", this.__onApplyJsonDoc, this);
+        },
+
+        __onApplyJsonDoc(e) {
+            // TODO
         },
 
         __onGenerate(e) {
@@ -59,22 +73,23 @@ qx.Class.define("jsonui.demo.Application", {
 
             try {
                 this.__fieldContainer.removeAll();
-
-                const schema = JSON.parse(schemaText);
                 
-                const generator = new jsonui.default.FieldGenerator(this.__fieldContainer);
-                generator.getArrayItemEditConfig().setAllowMaximize(true);
-                generator.getArrayItemEditConfig().setHeight(450);
-                generator.getArrayItemEditConfig().setModal(true);
-                generator.getArrayItemEditConfig().setResizable(true);
-                generator.getArrayItemEditConfig().setShowMaximize(true);
-                generator.getArrayItemEditConfig().setWidth(600);
+                this.__fieldGenerator = new jsonui.default.FieldGenerator(this.__fieldContainer);
+                this.__fieldGenerator.getArrayItemEditConfig().setAllowMaximize(true);
+                this.__fieldGenerator.getArrayItemEditConfig().setHeight(450);
+                this.__fieldGenerator.getArrayItemEditConfig().setModal(true);
+                this.__fieldGenerator.getArrayItemEditConfig().setResizable(true);
+                this.__fieldGenerator.getArrayItemEditConfig().setShowMaximize(true);
+                this.__fieldGenerator.getArrayItemEditConfig().setWidth(600);
 
-                const reader = new jsonui.SchemaReader(schema, generator);
+                const reader = new jsonui.SchemaReader(JSON.parse(schemaText), this.__fieldGenerator);
                 reader.setTrace(this.__traceCheckBox.getValue());
 
                 reader.read();
+
+                this.__applyJsonDocButton.setEnabled(true);
             } catch (ex) {
+                this.__applyJsonDocButton.setEnabled(false);
                 window.alert(ex);
             }
         }
