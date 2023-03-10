@@ -3,23 +3,32 @@ qx.Class.define("jsonui.test.Test", {
 
     members: {
         testParse() {
-            const generator = new jsonui.test.Generator(new jsonui.test.DummyFieldContainer());
+                const generator = new jsonui.test.Generator(new jsonui.test.DummyFieldContainer());
 
-            const reader = new jsonui.SchemaReader(jsonui.test.Test.TEST_SCHEMA, generator);
-            reader.read();
+                const reader = new jsonui.SchemaReader(jsonui.test.Test.TEST_SCHEMA, generator);
+                reader.setTrace(false);
+                
+                try {
+                    reader.read();
+                } catch (ex) {
+                    console.error(ex);
+                    this.assert(false);
+                }
 
-            const fields = generator.getFields();
-            this.assertInArray("array_of_object_value", fields);
-            this.assertInArray("array_of_string_value", fields);
-            this.assertInArray("boolean_value", fields);
-            this.assertInArray("enum_value", fields);
-            this.assertInArray("integer_value", fields);
-            this.assertInArray("number_value", fields);
-            this.assertInArray("object_value.object_value|array_of_object_value", fields);
-            this.assertInArray("object_value.object_value|number_value", fields);
-            this.assertInArray("object_value.object_value|object_value.object_value|object_value|string_value", fields);
-            this.assertInArray("object_value.object_value|string_value", fields);
-            this.assertInArray("string_value", fields);
+                const fields = generator.getFields();
+                this.assertInArray("array_of_object_value", fields);
+                this.assertInArray("array_of_string_value", fields);
+                this.assertInArray("boolean_value", fields);
+                this.assertInArray("enum_value", fields);
+                this.assertInArray("integer_value", fields);
+                this.assertInArray("number_value", fields);
+                this.assertInArray("object_value.object_value|array_of_object_value", fields);
+                this.assertInArray("object_value.object_value|number_value", fields);
+                this.assertInArray("object_value.object_value|object_value.object_value|object_value|string_value", fields);
+                this.assertInArray("object_value.object_value|string_value", fields);
+                this.assertInArray("string_value", fields);
+                this.assertInArray("ref_value.referenced_value|integer_value", fields);
+                this.assertInArray("ref_value.referenced_value|string_value", fields);
         }
     },
 
@@ -101,9 +110,26 @@ qx.Class.define("jsonui.test.Test", {
                         }
                     }
                 },
+                "ref_value": {
+                    "$ref": "#/$defs/referenced_value"
+                },
                 "string_value": {
                     "description": "A description for string_value",
                     "type": "string"
+                }
+            },
+
+            "$defs": {
+                "referenced_value": {
+                    "type": "object",
+                    "properties": {
+                        "referenced_value|integer_value": {
+                            "type": "integer"
+                        },
+                        "referenced_value|string_value": {
+                            "type": "string"
+                        }
+                    }
                 }
             }
         }

@@ -80,6 +80,22 @@ qx.Class.define("jsonui.SchemaReader", {
         },
 
         /**
+         * @returns {jsonui.SchemaReader} The root schema reader of this one. (Will return itself if it's the root.)
+         */
+        getRoot() {
+            if (this.isRoot()) {
+                return this;
+            }
+
+            while (true) {
+                let parent = this.getParent();
+                if (parent.isRoot()) {
+                    return parent;
+                }
+            }
+        },
+
+        /**
          * @returns {Object} The JSON schema or subschema that this reader reads.
          */
         getSchema() {
@@ -104,8 +120,13 @@ qx.Class.define("jsonui.SchemaReader", {
         read(generator) {
             let genToUse = generator ? generator : this.__generator;
 
-            if ("type" in this.__schema) {
-                switch (this.__schema.type) {
+            let schema = this.__schema;
+            if ("$ref" in this.__schema) {
+                schema = this.__resolveRef(this.__schema.$ref);
+            }
+
+            if ("type" in schema) {
+                switch (schema.type) {
                     case "array":
                         this.__log();
                         genToUse.handleArray(this);
@@ -134,9 +155,9 @@ qx.Class.define("jsonui.SchemaReader", {
                             genToUse.handleObject(this);
                         }
 
-                        for (let propName in this.__schema.properties) {
+                        for (let propName in schema.properties) {
                             const subSchemaReader = new jsonui.SchemaReader(
-                                this.__schema.properties[propName],
+                                schema.properties[propName],
                                 genToUse,
                                 propName,
                                 this
@@ -152,9 +173,9 @@ qx.Class.define("jsonui.SchemaReader", {
                         break;
                     
                     default:
-                        throw `Unknown schema type "${this.__schema.type}" for field "${this.getPath()}"`;
+                        throw `Unknown schema type "${schema.type}" for field "${this.getPath()}"`;
                 }
-            } else if ("enum" in this.__schema) {
+            } else if ("enum" in schema) {
                 this.__log();
                 genToUse.handleEnum(this);
             } else {
@@ -166,6 +187,23 @@ qx.Class.define("jsonui.SchemaReader", {
             if (this.getTrace()) {
                 console.warn(`SchemaReader: ${this.getPath(true)}`);
             }
+        },
+
+        __resolveRef(ref) {
+            let refParam = ref;
+
+            if (refParam.startsWith("#/")) {
+                refParam = refParam.substring(2);
+            }
+
+            const path = refParam.split("/");
+            
+            let node = this.getRoot().getSchema();
+            path.forEach((p) => {
+                node = node[p];
+            });
+
+            return node;
         }
     }
 });
