@@ -118,18 +118,17 @@ qx.Class.define("jsonui.SchemaReader", {
          * 
          * @param {jsonui.FieldGenerator} [generator] An alternate field generator to use. If not specified, the one
          *                                            provided on this object's construction will be used.
-         * @throws {String} if an error occurs while reading.
+         * @throws {Error} if an error occurs while reading.
          */
         read(generator) {
             let genToUse = generator ? generator : this.__generator;
 
-            let schema = this.__schema;
             if ("$ref" in this.__schema) {
-                schema = this.__resolveRef(this.__schema.$ref);
+                this.__schema = this.__resolveRef(this.__schema.$ref);
             }
 
-            if ("type" in schema) {
-                switch (schema.type) {
+            if ("type" in this.__schema) {
+                switch (this.__schema.type) {
                     case "array":
                         this.__log();
                         genToUse.handleArray(this);
@@ -158,9 +157,9 @@ qx.Class.define("jsonui.SchemaReader", {
                             genToUse.handleObject(this);
                         }
 
-                        for (let propName in schema.properties) {
+                        for (let propName in this.__schema.properties) {
                             const subSchemaReader = new jsonui.SchemaReader(
-                                schema.properties[propName],
+                                this.__schema.properties[propName],
                                 genToUse,
                                 propName,
                                 this
@@ -169,9 +168,9 @@ qx.Class.define("jsonui.SchemaReader", {
                             subSchemaReader.read();
                         }
 
-                        for (let propName in schema.patternProperties) {
+                        for (let propName in this.__schema.patternProperties) {
                             const subSchemaReader = new jsonui.SchemaReader(
-                                schema.patternProperties[propName],
+                                this.__schema.patternProperties[propName],
                                 genToUse,
                                 propName,
                                 this
@@ -187,13 +186,13 @@ qx.Class.define("jsonui.SchemaReader", {
                         break;
                     
                     default:
-                        throw `Unknown schema type "${schema.type}" for field "${this.getPath()}"`;
+                        throw new Error(`Unknown schema type "${this.__schema.type}" for field "${this.getPath()}"`);
                 }
-            } else if ("enum" in schema) {
+            } else if ("enum" in this.__schema) {
                 this.__log();
                 genToUse.handleEnum(this);
             } else {
-                throw `Invalid or unhandled definition for field "${this.getPath()}"`;
+                throw new Error(`Invalid or unhandled definition for field "${this.getPath()}"`);
             }
         },
 

@@ -21,6 +21,7 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method will be called by a SchemaReader to have an IField for editing an array created.
          * @param {jsonui.SchemaReader} schemaReader The reader invoking this method.
+         * @throws {Error} if an error occurs.
          */
         handleArray(schemaReader) {
             this.__addField(schemaReader, this._createArrayField(schemaReader));
@@ -29,6 +30,7 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method will be called by a SchemaReader to have an IField for editing a boolean created.
          * @param {jsonui.SchemaReader} schemaReader The reader invoking this method.
+         * @throws {Error} if an error occurs.
          */
         handleBoolean(schemaReader) {
             this.__addField(schemaReader, this._createBooleanField(schemaReader));
@@ -37,6 +39,7 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method will be called by a SchemaReader to have an IField for editing an enum created.
          * @param {jsonui.SchemaReader} schemaReader The reader invoking this method.
+         * @throws {Error} if an error occurs.
          */
         handleEnum(schemaReader) {
             this.__addField(schemaReader, this._createEnumField(schemaReader));
@@ -45,6 +48,7 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method will be called by a SchemaReader to have an IField for editing an integer created.
          * @param {jsonui.SchemaReader} schemaReader The reader invoking this method.
+         * @throws {Error} if an error occurs.
          */
         handleInteger(schemaReader) {
             this.__addField(schemaReader, this._createIntegerField(schemaReader));
@@ -53,6 +57,7 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method will be called by a SchemaReader to have an IField for editing a number created.
          * @param {jsonui.SchemaReader} schemaReader The reader invoking this method.
+         * @throws {Error} if an error occurs.
          */
         handleNumber(schemaReader) {
             this.__addField(schemaReader, this._createNumberField(schemaReader));
@@ -61,6 +66,7 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method will be called by a SchemaReader to have an IField for editing an object created.
          * @param {jsonui.SchemaReader} schemaReader The reader invoking this method.
+         * @throws {Error} if an error occurs.
          */
         handleObject(schemaReader) {
             this.__addField(schemaReader, this._createObjectField(schemaReader));
@@ -69,6 +75,7 @@ qx.Class.define("jsonui.FieldGenerator", {
         /**
          * This method will be called by a SchemaReader to have an IField for editing a string created.
          * @param {jsonui.SchemaReader} schemaReader The reader invoking this method.
+         * @throws {Error} if an error occurs.
          */
         handleString(schemaReader) {
             this.__addField(schemaReader, this._createStringField(schemaReader));
@@ -137,7 +144,7 @@ qx.Class.define("jsonui.FieldGenerator", {
             if (parent && !parent.isRoot()) {
                 const parentPath = parent.getPath();
                 if (!(parentPath in this.__pathsToFields)) {
-                    throw `Unable to find field for parent path "${parentPath}"`;
+                    throw new Error(`Unable to find field for parent path "${parentPath}"`);
                 }
 
                 container = this.__pathsToFields[parentPath];
