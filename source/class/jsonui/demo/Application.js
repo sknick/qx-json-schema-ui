@@ -9,15 +9,32 @@ qx.Class.define("jsonui.demo.Application", {
                 qx.log.appender.Native;
             }
 
-            this.__schemaField = new qx.ui.form.TextArea(JSON.stringify(jsonui.test.Test.TEST_SCHEMA, null, 4));
+            const schema = qx.bom.storage.Web.getLocal().getItem("jsonui-schema");
+
+            this.__schemaField = new qx.ui.form.TextArea(
+                schema ? schema : JSON.stringify(
+                    jsonui.test.Test.TEST_SCHEMA,
+                    null,
+                    4
+                )
+            );
             this.__schemaField.setHeight(300);
             this.__schemaField.setPlaceholder("Enter a JSON schema");
 
             const generateButton = new qx.ui.form.Button("Generate UI");
 
+            const trace = qx.bom.storage.Web.getLocal().getItem("jsonui-trace");
+
+            this.__traceCheckBox = new qx.ui.form.CheckBox("Trace (debug console)");
+            this.__traceCheckBox.setValue(trace ? true : false);
+
+            const controlsContainer = new qx.ui.container.Composite(new qx.ui.layout.Dock(10));
+            controlsContainer.add(generateButton,       { edge: "center" });
+            controlsContainer.add(this.__traceCheckBox, { edge: "east" });
+
             const topContainer = new qx.ui.container.Composite(new qx.ui.layout.Dock(5));
             topContainer.add(this.__schemaField, { edge: "center" });
-            topContainer.add(generateButton,     { edge: "south" });
+            topContainer.add(controlsContainer,  { edge: "south" });
 
             this.__fieldContainer = new jsonui.default.FieldContainer(10);
             this.__fieldContainer.setMaxWidth(800);
@@ -37,6 +54,9 @@ qx.Class.define("jsonui.demo.Application", {
                 return;
             }
 
+            qx.bom.storage.Web.getLocal().setItem("jsonui-schema", schemaText);
+            qx.bom.storage.Web.getLocal().setItem("jsonui-trace", this.__traceCheckBox.getValue());
+
             try {
                 this.__fieldContainer.removeAll();
 
@@ -46,6 +66,8 @@ qx.Class.define("jsonui.demo.Application", {
                 generator.getArrayItemEditConfig().setModal(true);
 
                 const reader = new jsonui.SchemaReader(schema, generator);
+                reader.setTrace(this.__traceCheckBox.getValue());
+
                 reader.read();
             } catch (ex) {
                 window.alert(ex);

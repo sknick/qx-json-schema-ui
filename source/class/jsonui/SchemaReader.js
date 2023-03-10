@@ -87,11 +87,14 @@ qx.Class.define("jsonui.SchemaReader", {
                 return this;
             }
 
+            let node = this;
             while (true) {
-                let parent = this.getParent();
+                let parent = node.getParent();
                 if (parent.isRoot()) {
                     return parent;
                 }
+
+                node = parent;
             }
         },
 
@@ -158,6 +161,17 @@ qx.Class.define("jsonui.SchemaReader", {
                         for (let propName in schema.properties) {
                             const subSchemaReader = new jsonui.SchemaReader(
                                 schema.properties[propName],
+                                genToUse,
+                                propName,
+                                this
+                            );
+                            subSchemaReader.setTrace(this.getTrace());
+                            subSchemaReader.read();
+                        }
+
+                        for (let propName in schema.patternProperties) {
+                            const subSchemaReader = new jsonui.SchemaReader(
+                                schema.patternProperties[propName],
                                 genToUse,
                                 propName,
                                 this
