@@ -187,6 +187,20 @@ qx.Class.define("jsonui.SchemaReader", {
                             // thing, treat them as an array of items
                             genToUse.handleArray(subSchemaReader);
                         }
+
+                        // TODO: This isn't totally right but works in some cases. Still need to allow for key/value
+                        // though.
+                        if ("additionalProperties" in this.__schema && (this.__schema.additionalProperties !== false)) {
+                            const subSchemaReader = new jsonui.SchemaReader(
+                                this.__schema.additionalProperties,
+                                genToUse,
+                                this.__name,
+                                this
+                            );
+                            subSchemaReader.setTrace(this.getTrace());
+
+                            genToUse.handleArray(subSchemaReader);
+                        }
                         break;
                     
                     case "string":
